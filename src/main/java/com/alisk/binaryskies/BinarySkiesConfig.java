@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Locale;
 
 public final class BinarySkiesConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
