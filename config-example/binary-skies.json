@@ -1,0 +1,23 @@
+{
+  "minCycleSeconds": 900,
+  "maxCycleSeconds": 1200,
+  "minDaySeconds": 300,
+  "maxDaySeconds": 540,
+  "minNightSeconds": 300,
+  "maxNightSeconds": 660,
+  "minTwilightSeconds": 30,
+  "maxTwilightSeconds": 90,
+  "anomalyChancePerCycle": 0.12,
+  "anomaliesEnabled": true,
+  "anomalyJumpTarget": 6000,
+  "secondStarEnabled": true,
+  "secondStarMinPeriodSeconds": 720,
+  "secondStarMaxPeriodSeconds": 1320,
+  "secondStarYawOffsetDegrees": 38.0,
+  "secondStarMaxAltitudeDegrees": 62.0,
+  "secondStarDistance": 24.0,
+  "secondStarRefreshTicks": 2,
+  "secondStarParticleScale": 1.7,
+  "secondStarColor": 16756664,
+  "advancementsEnabled": true
+}

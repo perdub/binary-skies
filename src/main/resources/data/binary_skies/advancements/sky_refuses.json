@@ -1,0 +1,23 @@
+{
+  "parent": "binary_skies:root",
+  "display": {
+    "icon": {
+      "id": "minecraft:echo_shard"
+    },
+    "title": {
+      "translate": "advancements.binary_skies.sky_refuses.title"
+    },
+    "description": {
+      "translate": "advancements.binary_skies.sky_refuses.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true
+  },
+  "criteria": {
+    "event": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

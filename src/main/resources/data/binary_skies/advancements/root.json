@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:spyglass"
+    },
+    "title": {
+      "translate": "advancements.binary_skies.root.title"
+    },
+    "description": {
+      "translate": "advancements.binary_skies.root.description"
+    },
+    "background": "minecraft:textures/block/amethyst_block.png",
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": true
+  },
+  "criteria": {
+    "root": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

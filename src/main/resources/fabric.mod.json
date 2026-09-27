@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "binary_skies",
+  "version": "${version}",
+  "name": "Binary Skies",
+  "description": "A server-side variable day/night cycle with a second visible star for Minecraft 1.21.1.",
+  "authors": ["Aliska"],
+  "contact": {},
+  "license": "MIT",
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "com.alisk.binaryskies.BinarySkies"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "1.21.1",
+    "fabric-api": ">=0.116.0"
+  }
+}
