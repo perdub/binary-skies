@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -33,9 +33,68 @@ jobs:
       - name: Build
         run: gradle clean build --no-daemon
 
+      - name: Verify build outputs
+        shell: bash
+        run: |
+          test -f build/libs/binary-skies-${{ github.event_name == 'push' && '0.1.0' || '0.1.0' }}.jar
+          ls -lah build/libs/
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: binary-skies-build
           path: build/libs/*.jar
           if-no-files-found: error
+
+      # Every successful push to main/master also updates a rolling GitHub Release
+      # named/tagged "latest". This gives a permanent download URL that never
+      # contains a version number:
+      # https://github.com/<owner>/<repo>/releases/latest/download/binary-skies.jar
+      - name: Prepare stable latest asset
+        if: github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master')
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf dist
+          mkdir -p dist
+          main_jar=$(find build/libs -maxdepth 1 -type f -name 'binary-skies-*.jar' ! -name '*-sources.jar' | head -n 1)
+          sources_jar=$(find build/libs -maxdepth 1 -type f -name 'binary-skies-*-sources.jar' | head -n 1)
+          test -n "$main_jar"
+          test -n "$sources_jar"
+          cp "$main_jar" dist/binary-skies.jar
+          cp "$sources_jar" dist/binary-skies-sources.jar
+          sha256sum dist/binary-skies.jar > dist/binary-skies.jar.sha256
+
+      - name: Move latest tag to this build
+        if: github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master')
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -f latest "$GITHUB_SHA"
+          git push origin refs/tags/latest --force
+
+      - name: Publish rolling latest release
+        if: github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master')
+        uses: softprops/action-gh-release@v3.0.3
+        with:
+          tag_name: latest
+          name: Binary Skies — Latest Build
+          body: |
+            Rolling build from `${{ github.ref_name }}`.
+
+            Commit: `${{ github.sha }}`
+
+            Stable download URL:
+            `https://github.com/${{ github.repository }}/releases/latest/download/binary-skies.jar`
+          prerelease: false
+          draft: false
+          make_latest: true
+          overwrite_files: true
+          files: |
+            dist/binary-skies.jar
+            dist/binary-skies-sources.jar
+            dist/binary-skies.jar.sha256

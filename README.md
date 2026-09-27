@@ -92,7 +92,19 @@ git tag v0.1.0
 git push origin v0.1.0
 ```
 
-The release workflow uses Java 21, Gradle 8.10.2, and attaches both the mod jar and the sources jar to the GitHub Release.
+The release workflow uses Java 21, Gradle 8.10.2, and attaches the versioned mod jar, sources jar, and SHA-256 checksum to the GitHub Release.
+
+### Stable download URL
+
+Every successful push to `main` or `master` updates a rolling `latest` GitHub Release. The mod jar is always uploaded with the stable asset name `binary-skies.jar`, so consumers that need a fixed URL can use:
+
+```text
+https://github.com/<owner>/<repo>/releases/latest/download/binary-skies.jar
+```
+
+This URL does not contain the mod version and therefore remains unchanged when a new build is published. The same rolling release also contains `binary-skies-sources.jar` and `binary-skies.jar.sha256`.
+
+Versioned releases are still created by pushing tags such as `v0.1.0`; those releases are kept separate from the rolling `latest` release.
 
 ### Localization
 Advancement titles and descriptions use Minecraft translation keys. The project includes English (`en_us`) and Russian (`ru_ru`) localization.

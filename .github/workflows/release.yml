@@ -43,12 +43,21 @@ jobs:
       - name: Build release
         run: gradle clean build --no-daemon -Pmod_version="${{ steps.version.outputs.version }}"
 
+      - name: Prepare release assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum "build/libs/binary-skies-${{ steps.version.outputs.version }}.jar" > "build/libs/binary-skies-${{ steps.version.outputs.version }}.jar.sha256"
+
       - name: Publish GitHub Release
-        uses: softprops/action-gh-release@v3.0.2
+        uses: softprops/action-gh-release@v3.0.3
         with:
           tag_name: ${{ github.ref_name }}
           name: Binary Skies ${{ github.ref_name }}
           generate_release_notes: true
+          make_latest: false
+          overwrite_files: true
           files: |
             build/libs/binary-skies-${{ steps.version.outputs.version }}.jar
             build/libs/binary-skies-${{ steps.version.outputs.version }}-sources.jar
+            build/libs/binary-skies-${{ steps.version.outputs.version }}.jar.sha256
